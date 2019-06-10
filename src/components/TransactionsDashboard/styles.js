@@ -5,8 +5,24 @@ const HIDE_STYLES = {
 };
 
 export default theme => ({
-	headers: {
+	hide: HIDE_STYLES,
+	name: {},
+	brand: {},
+	last4Digits: {},
+	transactionType: {},
+	amount: {},
+	currency: {},
+	label: {
+		display: 'none',
+	},
+	data: {},
+
+	// TABLE HEADERS STYLES
+	tableHeaders: {
 		display: 'flex',
+		'& [role="columnheader"]': {
+			flex: '1 0 10%',
+		},
 		[theme.breakpoints.down('sm')]: {
 			'& $name, & $amount, & $currency, & $transactionType': {
 				flex: '1 0 23%',
@@ -24,27 +40,69 @@ export default theme => ({
 			},
 		},
 	},
-	name: {
-		flex: '1 0 10%',
+
+	// TABLE BODY STYLES
+	tableBody: {},
+	tableBodyRow: {},
+	topPanel: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
+		'& [role="cell"]': {
+			flex: '1 0 10%',
+		},
+		[theme.breakpoints.down('sm')]: {
+			'& [role="cell"]': {
+				flex: '1 0 23%',
+			},
+			'& $brand, & $last4Digits': {
+				flex: '1 0 63%',
+				order: 1,
+				display: 'flex',
+				justifyContent: 'flex-start',
+				// height: 1,
+				overflow: 'hidden',
+				maxWidth: '80%',
+			},
+			'& $brand $label, & $last4Digits $label': {
+				flex: '1 0 30%',
+				display: 'block',
+				textAlign: 'left',
+			},
+			'& $brand $data, & $last4Digits $data': {
+				flex: '1 0 60%',
+				textAlign: 'left',
+			},
+		},
+		[theme.breakpoints.down('xs')]: {
+			'& [role="cell"]': {
+				flex: '1 0 30%',
+			},
+			'& $brand, & $last4Digits, & $transactionType': {
+				flex: '1 0 60%',
+				order: 1,
+				display: 'flex',
+				justifyContent: 'flex-start',
+				// height: 1,
+				overflow: 'hidden',
+				maxWidth: '80%',
+			},
+			'& $brand $label, & $last4Digits $label, & $transactionType $label': {
+				flex: '1 0 30%',
+				display: 'block',
+				textAlign: 'left',
+			},
+			'& $brand $data, & $last4Digits $data, & $transactionType $data': {
+				flex: '1 0 60%',
+				textAlign: 'left',
+			},
+		},
 	},
-	brand: {
-		flex: '1 0 10%',
-	},
-	last4Digits: {
-		flex: '1 0 10%',
-	},
-	transactionType: {
-		flex: '1 0 10%',
-	},
-	amount: {
-		flex: '1 0 10%',
-	},
-	currency: {
-		flex: '1 0 10%',
-	},
-	hide: HIDE_STYLES,
-	topPanel: {},
-	expansionPanel: {
+
+	bottomPanel: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'center',
 		transition: 'height 400ms linear',
 	},
 	collapsed: {
@@ -53,12 +111,30 @@ export default theme => ({
 	},
 
 	extraDetails: {
-		"&[role='cell']": {
-			display: 'block',
-			width: 'auto',
+		flex: '1 0 40%',
+		display: 'flex',
+		justifyContent: 'flex-start',
+		overflow: 'hidden',
+		maxWidth: '45%',
+		[theme.breakpoints.down('sm')]: {
+			flex: '1 0 60%',
+			display: 'flex',
+			justifyContent: 'flex-start',
+			overflow: 'hidden',
+			maxWidth: '80%',
 		},
-		'&:before': {
-			content: 'attr(data-column)',
+		"&[role='cell']": {
+			display: 'flex',
+			justifyContent: 'center',
+		},
+		'& $label': {
+			flex: '1 0 30%',
+			display: 'block',
+			textAlign: 'left',
+		},
+		'& $data': {
+			flex: '1 0 60%',
+			textAlign: 'left',
 		},
 	},
 });

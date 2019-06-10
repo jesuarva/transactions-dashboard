@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
-import './transactionsDashboard.css';
 import styles from './styles';
 
 function togglePanel(panel) {
@@ -25,7 +24,7 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 					List of transations for the current loged user.
 				</h2>
 				<div role="rowgroup">
-					<div role="row" className={classes.headers}>
+					<div role="row" className={classes.tableHeaders}>
 						<span role="columnheader" className={classes.name}>
 							Name
 						</span>
@@ -65,7 +64,7 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 						</span>
 					</div>
 				</div>
-				<div role="rowgroup">
+				<div role="rowgroup" className={classes.tableBody}>
 					{data.map((transaction, index) => {
 						return (
 							<div
@@ -75,6 +74,7 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 								// 	console.log(node);
 								// 	rowRefs.current[index] = node;
 								// }}
+								className={classes.tableBodyRow}
 								role="row"
 							>
 								<div
@@ -85,55 +85,70 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 									onKeyPress={() => togglePanel(rowRefs.current[index])}
 									tabIndex={0}
 								>
-									<span role="cell" className={classes.holderName}>
+									<div role="cell" className={classes.name}>
 										{transaction.card.holderName}
-									</span>
-									<span role="cell" className={classes.brandId}>
-										{cardBrand[transaction.brandId]}
-									</span>
-									<span role="cell" className={classes.lastFourDigits}>
-										{transaction.card.lastFourDigits}
-									</span>
-									<span role="cell" className={classes.action}>
-										{transaction.action}
-									</span>
-									<span role="cell" className={classes.amount}>
+									</div>
+									<div role="cell" className={classes.brand}>
+										<div aria-hidden="true" className={classes.label}>
+											{'Brand'}
+										</div>
+										<span className={classes.data}>{cardBrand[transaction.brandId]}</span>
+									</div>
+									<div role="cell" className={classes.last4Digits}>
+										<span aria-hidden="true" className={classes.label}>
+											{'Last 4 digits'}
+										</span>
+										<span className={classes.data}>{transaction.card.lastFourDigits}</span>
+									</div>
+									<div role="cell" className={classes.transactionType}>
+										<span aria-hidden="true" className={classes.label}>
+											{'Transaction type'}
+										</span>
+										<span className={classes.data}>{transaction.action}</span>
+									</div>
+									<div role="cell" className={classes.amount}>
 										{transaction.amount}
-									</span>
-									<span role="cell" className={classes.currencyCode}>
+									</div>
+									<div role="cell" className={classes.currency}>
 										{transaction.currencyCode}
-									</span>
+									</div>
 								</div>
-								<div className={classes.expansionPanel}>
-									<div>
-										<div role="cell" className={classes.extraDetails} data-column="ID">
-											{transaction.id}
-										</div>
+								<div className={classes.bottomPanel}>
+									<div role="cell" className={classes.extraDetails}>
+										<span aria-hidden="true" className={classes.label}>
+											{'ID'}
+										</span>
+										<span className={classes.data}>{transaction.id}</span>
 									</div>
-									<div>
-										<div role="cell" className={classes.extraDetails} data-column="First 6 Digits">
-											{transaction.card.firstSixDigits}
-										</div>
+									<div role="cell" className={classes.extraDetails}>
+										<span aria-hidden="true" className={classes.label}>
+											{'First 6 Digits'}
+										</span>
+										<span className={classes.data}>{transaction.card.firstSixDigits}</span>
 									</div>
-									<div>
-										<div role="cell" className={classes.extraDetails} data-column="Tracking code">
-											{transaction.trackingCode}
-										</div>
+									<div role="cell" className={classes.extraDetails}>
+										<span aria-hidden="true" className={classes.label}>
+											{'Tracking code'}
+										</span>
+										<span className={classes.data}>{transaction.trackingCode}</span>
 									</div>
-									<div>
-										<div role="cell" className={classes.extraDetails} data-column="Expiry month">
-											{transaction.card.expiryMonth}
-										</div>
+									<div role="cell" className={classes.extraDetails}>
+										<span aria-hidden="true" className={classes.label}>
+											{'Expiry month'}
+										</span>
+										<span className={classes.data}>{transaction.card.expiryMonth}</span>
 									</div>
-									<div>
-										<div role="cell" className={classes.extraDetails} data-column="Brand ID">
-											{transaction.brandId}
-										</div>
+									<div role="cell" className={classes.extraDetails}>
+										<span aria-hidden="true" className={classes.label}>
+											{'Brand ID'}
+										</span>
+										<span className={classes.data}>{transaction.brandId}</span>
 									</div>
-									<div>
-										<div role="cell" className={classes.extraDetails} data-column="Expiry year">
-											{transaction.card.expiryYear}
-										</div>
+									<div role="cell" className={classes.extraDetails}>
+										<span aria-hidden="true" className={classes.label}>
+											{'Expiry year'}
+										</span>
+										<span className={classes.data}>{transaction.card.expiryYear}</span>
 									</div>
 								</div>
 							</div>
