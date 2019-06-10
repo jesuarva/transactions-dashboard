@@ -25,29 +25,42 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 					List of transations for the current loged user.
 				</h2>
 				<div role="rowgroup">
-					<div role="row">
-						<span role="columnheader">Name</span>
-						<span role="columnheader">Brand</span>
-						<span role="columnheader">Last 4 digits</span>
-						<span role="columnheader">Transaction type</span>
-						<span role="columnheader">Amount</span>
-						<span role="columnheader">Currency</span>
-						<span className={classes.hide} role="columnheader">
+					<div role="row" className={classes.headers}>
+						<span role="columnheader" className={classes.name}>
+							Name
+						</span>
+						<span role="columnheader" className={classes.brand}>
+							Brand
+						</span>
+						<span role="columnheader" className={classes.last4Digits}>
+							Last 4 digits
+						</span>
+						<span role="columnheader" className={classes.transactionType}>
+							Transaction type
+						</span>
+						<span role="columnheader" className={classes.amount}>
+							Amount
+						</span>
+						<span role="columnheader" className={classes.currency}>
+							Currency
+						</span>
+
+						<span role="columnheader" className={classes.hide}>
 							ID
 						</span>
-						<span className={classes.hide} role="columnheader">
+						<span role="columnheader" className={classes.hide}>
 							Tracking code
 						</span>
-						<span className={classes.hide} role="columnheader">
+						<span role="columnheader" className={classes.hide}>
 							Brand ID
 						</span>
-						<span className={classes.hide} role="columnheader">
+						<span role="columnheader" className={classes.hide}>
 							First 6 digits
 						</span>
-						<span className={classes.hide} role="columnheader">
+						<span role="columnheader" className={classes.hide}>
 							Expiry month
 						</span>
-						<span className={classes.hide} role="columnheader">
+						<span role="columnheader" className={classes.hide}>
 							Expiry year
 						</span>
 					</div>
@@ -56,6 +69,7 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 					{data.map((transaction, index) => {
 						return (
 							<div
+								key={transaction.id}
 								ref={rowRefs.current[index]}
 								// ref={node => {
 								// 	console.log(node);
@@ -64,7 +78,7 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 								role="row"
 							>
 								<div
-									className={classes.visiblePanel}
+									className={classes.topPanel}
 									role="button"
 									onClick={() => togglePanel(rowRefs.current[index])}
 									// onClick={() => togglePanel(index)}
