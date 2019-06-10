@@ -2,6 +2,11 @@ import { FECHED_DATA, FETCHING_DATA, FETCHING_DATA_ERROR } from '../actions';
 
 const initialState = {
 	data: null,
+	cardBrand: {
+		'1060': 'Diners Club',
+		'1020': 'Visa',
+		'1010': 'MasterCard',
+	},
 	fetchingData: false,
 	error: null,
 };
