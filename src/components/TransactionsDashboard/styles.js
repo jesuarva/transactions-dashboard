@@ -1,23 +1,40 @@
+import { hidden } from 'ansi-colors';
+
 const HIDE_STYLES = {
 	position: 'absolute',
 	top: '-500px',
 	overflow: 'hidden',
 };
+const CELL_HEIGHT = {
+	DESKTOP: '40px',
+	TABLET: '20px',
+	MOBILE: '20px',
+};
 
 export default theme => ({
 	hide: HIDE_STYLES,
+	collapsed: {},
 	name: {},
 	brand: {},
 	last4Digits: {},
 	transactionType: {},
 	amount: {},
 	currency: {},
-	label: {
-		display: 'none',
-	},
+	label: {},
 	data: {},
 
-	// TABLE HEADERS STYLES
+	table: {
+		'& [role="cell"], & [role="columnheader"]': {
+			height: CELL_HEIGHT.DESKTOP,
+		},
+		'& [role="cell"], & [role="columnheader"], & $label, & $data': {
+			display: 'flex',
+			flexDirection: 'column',
+			justifyContent: 'center',
+		},
+	},
+
+	// TABLE-HEADERS STYLES
 	tableHeaders: {
 		display: 'flex',
 		'& [role="columnheader"]': {
@@ -41,17 +58,27 @@ export default theme => ({
 		},
 	},
 
-	// TABLE BODY STYLES
+	// TABLE-BODY STYLES
 	tableBody: {},
 	tableBodyRow: {},
 	topPanel: {
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
+		height: CELL_HEIGHT.DESKTOP,
+		transition: 'height 200ms linear',
+		overflow: 'hidden',
 		'& [role="cell"]': {
 			flex: '1 0 10%',
 		},
+		'& $label': {
+			display: 'none',
+		},
 		[theme.breakpoints.down('sm')]: {
+			height: `calc(var(--topPanel-numberOfSubRowsTablet) * ${CELL_HEIGHT.DESKTOP})`,
+			'&$collapsed': {
+				height: CELL_HEIGHT.DESKTOP,
+			},
 			'& [role="cell"]': {
 				flex: '1 0 23%',
 			},
@@ -59,6 +86,7 @@ export default theme => ({
 				flex: '1 0 63%',
 				order: 1,
 				display: 'flex',
+				flexDirection: 'row',
 				justifyContent: 'flex-start',
 				// height: 1,
 				overflow: 'hidden',
@@ -66,7 +94,7 @@ export default theme => ({
 			},
 			'& $brand $label, & $last4Digits $label': {
 				flex: '1 0 30%',
-				display: 'block',
+				display: 'flex',
 				textAlign: 'left',
 			},
 			'& $brand $data, & $last4Digits $data': {
@@ -75,6 +103,10 @@ export default theme => ({
 			},
 		},
 		[theme.breakpoints.down('xs')]: {
+			height: `calc(var(--topPanel-numberOfSubRowsMobile) * ${CELL_HEIGHT.DESKTOP})`,
+			'&$collapsed': {
+				height: CELL_HEIGHT.DESKTOP,
+			},
 			'& [role="cell"]': {
 				flex: '1 0 30%',
 			},
@@ -82,6 +114,7 @@ export default theme => ({
 				flex: '1 0 60%',
 				order: 1,
 				display: 'flex',
+				flexDirection: 'row',
 				justifyContent: 'flex-start',
 				// height: 1,
 				overflow: 'hidden',
@@ -89,7 +122,7 @@ export default theme => ({
 			},
 			'& $brand $label, & $last4Digits $label, & $transactionType $label': {
 				flex: '1 0 30%',
-				display: 'block',
+				display: 'flex',
 				textAlign: 'left',
 			},
 			'& $brand $data, & $last4Digits $data, & $transactionType $data': {
@@ -103,13 +136,13 @@ export default theme => ({
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
-		transition: 'height 400ms linear',
-	},
-	collapsed: {
-		height: 1,
+		height: `calc(var(--bottomPanel-numberOfChildrenCells) * ${CELL_HEIGHT.DESKTOP})`,
+		transition: 'height 200ms linear',
 		overflow: 'hidden',
+		'&$collapsed': {
+			height: '1px',
+		},
 	},
-
 	extraDetails: {
 		flex: '1 0 40%',
 		display: 'flex',
@@ -125,11 +158,11 @@ export default theme => ({
 		},
 		"&[role='cell']": {
 			display: 'flex',
+			flexDirection: 'row',
 			justifyContent: 'center',
 		},
 		'& $label': {
 			flex: '1 0 30%',
-			display: 'block',
 			textAlign: 'left',
 		},
 		'& $data': {
