@@ -24,7 +24,9 @@ function App(props) {
 					Learn React
 				</a>
 			</header>
-			<TransactionsDashboard></TransactionsDashboard>
+			<main>
+				<TransactionsDashboard></TransactionsDashboard>
+			</main>
 		</div>
 	);
 }
