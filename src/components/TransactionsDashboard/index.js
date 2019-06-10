@@ -1,25 +1,36 @@
-import React, { useRef, createRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import styles from './styles';
 
-function togglePanel(panel) {
-	console.log(panel);
-	// requestAnimationFrame(() => (panel.style.height = 'auto'));
-}
-
 function TransactionsDashboard({ data, cardBrand, classes }) {
-	console.log(classes);
-	const rowRefs = useRef(Array(data.length).fill(createRef()));
-	// useEffect(() => {
-	// 	rowRefs.current = Array(data.length).fill(createRef());
-	// }, [data.length]);
+	const [expandedPanels, setExpandedPanels] = useState(Array(data.length).fill(false));
+	const rowRefs = useRef([]);
+	function updatePanels(index) {
+		expandedPanels.splice(index, 1, !expandedPanels[index]);
+		setExpandedPanels([...expandedPanels]);
+		if (expandedPanels[index]) {
+		}
+	}
+	function handleClick(index) {
+		updatePanels(index);
+	}
+	function handleKeyPress(event, index) {
+		event.key === 'Enter' && updatePanels(index);
+	}
 
+	console.log(expandedPanels);
 	return (
 		<Paper className={classes.root}>
-			<div role="table" aria-label="Transactions" aria-describedby="transactions_table_description">
+			<div
+				role="table"
+				className={classes.table}
+				aria-label="Transactions"
+				aria-describedby="transactions_table_description"
+			>
 				<h2 className={classes.hide} id="transactions_table_description">
 					List of transations for the current loged user.
 				</h2>
@@ -65,33 +76,30 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 					</div>
 				</div>
 				<div role="rowgroup" className={classes.tableBody}>
-					{data.map((transaction, index) => {
+					{data.map((transaction, i) => {
+						const index = i;
 						return (
 							<div
 								key={transaction.id}
-								ref={rowRefs.current[index]}
-								// ref={node => {
-								// 	console.log(node);
-								// 	rowRefs.current[index] = node;
-								// }}
+								id={transaction.id}
+								ref={el => (rowRefs.current[index] = el)}
 								className={classes.tableBodyRow}
 								role="row"
 							>
 								<div
 									className={classes.topPanel}
 									role="button"
-									onClick={() => togglePanel(rowRefs.current[index])}
-									// onClick={() => togglePanel(index)}
-									onKeyPress={() => togglePanel(rowRefs.current[index])}
+									onClick={() => handleClick(index)}
+									onKeyPress={e => handleKeyPress(e, index)}
 									tabIndex={0}
 								>
 									<div role="cell" className={classes.name}>
 										{transaction.card.holderName}
 									</div>
 									<div role="cell" className={classes.brand}>
-										<div aria-hidden="true" className={classes.label}>
+										<span aria-hidden="true" className={classes.label}>
 											{'Brand'}
-										</div>
+										</span>
 										<span className={classes.data}>{cardBrand[transaction.brandId]}</span>
 									</div>
 									<div role="cell" className={classes.last4Digits}>
@@ -113,7 +121,13 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 										{transaction.currencyCode}
 									</div>
 								</div>
-								<div className={classes.bottomPanel}>
+								<div
+									className={classNames(
+										classes.bottomPanel,
+										expandedPanels[index] ? classes.expanded : classes.collapsed,
+									)}
+									style={{ '--bottomPanel-numberOfChildrenCells': 6 }}
+								>
 									<div role="cell" className={classes.extraDetails}>
 										<span aria-hidden="true" className={classes.label}>
 											{'ID'}
