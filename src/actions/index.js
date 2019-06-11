@@ -8,8 +8,8 @@ const URL =
 	process.env.REACT_APP_TRANSACTIONS_API ||
 	'https://jovs5zmau3.execute-api.eu-west-1.amazonaws.com/prod/transactions';
 
-export function fetchData() {
-	const fetch = axios.get(URL);
+export function fetchData(query) {
+	const fetch = axios.get(query ? `${URL}?${query}` : URL);
 	return dispatch => {
 		dispatch({ type: FETCHING_DATA });
 		fetch

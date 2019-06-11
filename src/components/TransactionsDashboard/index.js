@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
+import SearchFilterBar from '../SearchFilterBar';
 import styles from './styles';
 
 function TransactionsDashboard({ data, cardBrand, classes }) {
@@ -27,6 +28,7 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 			role="contentinfo"
 			aria-label="This is the transactions dashboard"
 		>
+			<SearchFilterBar></SearchFilterBar>
 			<div
 				role="table"
 				className={classes.table}
