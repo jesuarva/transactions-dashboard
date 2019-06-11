@@ -9,7 +9,12 @@ const URL =
 	'https://jovs5zmau3.execute-api.eu-west-1.amazonaws.com/prod/transactions';
 
 export function fetchData(query) {
-	const fetch = axios.get(query ? `${URL}?${query}` : URL);
+	const url = query ? `${URL}?${query}` : URL;
+	const fetch = axios.get(url, {
+		headers: {
+			Authorization: 'Basic Y29kZS1jaGFsbGVuZ2U6cGF5dmlzaW9uZXI=',
+		},
+	});
 	return dispatch => {
 		dispatch({ type: FETCHING_DATA });
 		fetch

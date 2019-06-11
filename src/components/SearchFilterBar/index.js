@@ -11,7 +11,7 @@ import { fetchData } from '../../actions';
 import styles from './styles';
 
 /**
- * Object defining the queries endpoints.
+ * Object defining the query endpoints.
  */
 const QUERIES_DETAILS = {
 	action: {
@@ -20,7 +20,7 @@ const QUERIES_DETAILS = {
 	},
 	currencyCode: {
 		label: 'Currency',
-		values: ['All', 'ERU', 'JPY', 'USD'],
+		values: ['All', 'EUR', 'JPY', 'USD'],
 	},
 };
 function setInitialState() {
@@ -53,12 +53,11 @@ function SearchFilterBar({ fetchData, classes }) {
 		}
 
 		fetchData(queryString);
-		setState(setInitialState());
 	}
 
 	console.log(state);
 	return (
-		<div>
+		<div className={classes.root}>
 			{Object.entries(QUERIES_DETAILS).map(([field, details]) => (
 				<FormControl key={field} variant="outlined" className={classes.formControl}>
 					<InputLabel htmlFor={`${field}-dropDown`}>{details.label}</InputLabel>

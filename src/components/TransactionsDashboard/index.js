@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -7,8 +7,13 @@ import SearchFilterBar from '../SearchFilterBar';
 import styles from './styles';
 
 function TransactionsDashboard({ data, cardBrand, classes }) {
-	const [expandedPanels, setExpandedPanels] = useState(Array(data.length).fill(false));
+	const [expandedPanels, setExpandedPanels] = useState([]);
 	const rowRefs = useRef([]);
+	useEffect(() => {
+		if (data) {
+			setExpandedPanels(Array(data.length).fill(false));
+		}
+	}, [data]);
 	function updatePanels(index) {
 		expandedPanels.splice(index, 1, !expandedPanels[index]);
 		setExpandedPanels([...expandedPanels]);
@@ -80,93 +85,100 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 					</div>
 				</div>
 				<div role="rowgroup" className={classes.tableBody}>
-					{data.map((transaction, i) => {
-						const index = i;
-						return (
-							<div
-								role="row button"
-								key={transaction.id}
-								id={transaction.id}
-								ref={el => (rowRefs.current[index] = el)}
-								tabIndex={0}
-								className={classNames(classes.details, expandedPanels[index] || classes.collapsed)}
-								style={{
-									'--topPanel-numberOfSubRowsDesktop': 5,
-									'--topPanel-numberOfSubRowsTablet': 10,
-									'--topPanel-numberOfSubRowsMobile': 11,
-								}}
-								onClick={() => handleClick(index)}
-								onKeyPress={e => handleKeyPress(e, index)}
-							>
-								<div role="cell" className={classes.name}>
-									{transaction.card.holderName}
-								</div>
-								<div role="cell" className={classNames(classes.extraDetails, classes.brand)}>
-									<div aria-hidden="true" className={classes.label}>
-										{'Brand:'}
+					{data &&
+						data.map((transaction, i) => {
+							const index = i;
+							return (
+								<div
+									role="row button"
+									key={transaction.id}
+									id={transaction.id}
+									ref={el => (rowRefs.current[index] = el)}
+									tabIndex={0}
+									className={classNames(
+										classes.details,
+										expandedPanels[index] || classes.collapsed,
+									)}
+									style={{
+										'--topPanel-numberOfSubRowsDesktop': 5,
+										'--topPanel-numberOfSubRowsTablet': 10,
+										'--topPanel-numberOfSubRowsMobile': 11,
+									}}
+									onClick={() => handleClick(index)}
+									onKeyPress={e => handleKeyPress(e, index)}
+								>
+									<div role="cell" className={classes.name}>
+										{transaction.card.holderName}
 									</div>
-									<div className={classes.data}>{cardBrand[transaction.brandId]}</div>
-								</div>
-								<div role="cell" className={classNames(classes.extraDetails, classes.last4Digits)}>
-									<div aria-hidden="true" className={classes.label}>
-										{'Last 4 digits:'}
+									<div role="cell" className={classNames(classes.extraDetails, classes.brand)}>
+										<div aria-hidden="true" className={classes.label}>
+											{'Brand:'}
+										</div>
+										<div className={classes.data}>{cardBrand[transaction.brandId]}</div>
 									</div>
-									<div className={classes.data}>{`XXXX ${transaction.card.lastFourDigits}`}</div>
-								</div>
-								<div role="cell" className={classes.transactionType}>
-									<div aria-hidden="true" className={classes.label}>
-										{'Transaction type:'}
+									<div
+										role="cell"
+										className={classNames(classes.extraDetails, classes.last4Digits)}
+									>
+										<div aria-hidden="true" className={classes.label}>
+											{'Last 4 digits:'}
+										</div>
+										<div className={classes.data}>{`XXXX ${transaction.card.lastFourDigits}`}</div>
 									</div>
-									<div className={classes.data}>{transaction.action}</div>
-								</div>
-								<div role="cell" className={classes.amount}>
-									{transaction.amount}
-								</div>
-								<div role="cell" className={classes.currency}>
-									{transaction.currencyCode}
-								</div>
+									<div role="cell" className={classes.transactionType}>
+										<div aria-hidden="true" className={classes.label}>
+											{'Transaction type:'}
+										</div>
+										<div className={classes.data}>{transaction.action}</div>
+									</div>
+									<div role="cell" className={classes.amount}>
+										{transaction.amount}
+									</div>
+									<div role="cell" className={classes.currency}>
+										{transaction.currencyCode}
+									</div>
 
-								{expandedPanels[index] && <hr className={classes.hr}></hr>}
+									{expandedPanels[index] && <hr className={classes.hr}></hr>}
 
-								<div role="cell" className={classes.extraDetails}>
-									<div aria-hidden="true" className={classes.label}>
-										{'ID:'}
+									<div role="cell" className={classes.extraDetails}>
+										<div aria-hidden="true" className={classes.label}>
+											{'ID:'}
+										</div>
+										<div className={classes.data}>{transaction.id}</div>
 									</div>
-									<div className={classes.data}>{transaction.id}</div>
-								</div>
-								<div role="cell" className={classes.extraDetails}>
-									<div aria-hidden="true" className={classes.label}>
-										{'First 6 Digits:'}
+									<div role="cell" className={classes.extraDetails}>
+										<div aria-hidden="true" className={classes.label}>
+											{'First 6 Digits:'}
+										</div>
+										<div className={classes.data}>{`${transaction.card.firstSixDigits} XXXX`}</div>
 									</div>
-									<div className={classes.data}>{`${transaction.card.firstSixDigits} XXXX`}</div>
-								</div>
-								<div role="cell" className={classes.extraDetails}>
-									<div aria-hidden="true" className={classes.label}>
-										{'Tracking code:'}
+									<div role="cell" className={classes.extraDetails}>
+										<div aria-hidden="true" className={classes.label}>
+											{'Tracking code:'}
+										</div>
+										<div className={classes.data}>{transaction.trackingCode}</div>
 									</div>
-									<div className={classes.data}>{transaction.trackingCode}</div>
-								</div>
-								<div role="cell" className={classes.extraDetails}>
-									<div aria-hidden="true" className={classes.label}>
-										{'Expiry month:'}
+									<div role="cell" className={classes.extraDetails}>
+										<div aria-hidden="true" className={classes.label}>
+											{'Expiry month:'}
+										</div>
+										<div className={classes.data}>{transaction.card.expiryMonth}</div>
 									</div>
-									<div className={classes.data}>{transaction.card.expiryMonth}</div>
-								</div>
-								<div role="cell" className={classes.extraDetails}>
-									<div aria-hidden="true" className={classes.label}>
-										{'Brand ID:'}
+									<div role="cell" className={classes.extraDetails}>
+										<div aria-hidden="true" className={classes.label}>
+											{'Brand ID:'}
+										</div>
+										<div className={classes.data}>{transaction.brandId}</div>
 									</div>
-									<div className={classes.data}>{transaction.brandId}</div>
-								</div>
-								<div role="cell" className={classes.extraDetails}>
-									<div aria-hidden="true" className={classes.label}>
-										{'Expiry year:'}
+									<div role="cell" className={classes.extraDetails}>
+										<div aria-hidden="true" className={classes.label}>
+											{'Expiry year:'}
+										</div>
+										<div className={classes.data}>{transaction.card.expiryYear}</div>
 									</div>
-									<div className={classes.data}>{transaction.card.expiryYear}</div>
 								</div>
-							</div>
-						);
-					})}
+							);
+						})}
 				</div>
 			</div>
 		</section>

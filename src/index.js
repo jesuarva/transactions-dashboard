@@ -4,16 +4,20 @@ import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import mainReducer from './reducer';
-import './index.css';
-import App from './App';
+import './styles/index.css';
+import theme from './styles/theme.js';
+import App from './components/App/App';
 import * as serviceWorker from './serviceWorker';
 
 const store = createStore(mainReducer, applyMiddleware(thunk, logger));
 
 ReactDOM.render(
 	<Provider store={store}>
-		<App />
+		<MuiThemeProvider theme={theme}>
+			<App />
+		</MuiThemeProvider>
 	</Provider>,
 	document.getElementById('root'),
 );

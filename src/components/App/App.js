@@ -7,7 +7,7 @@ import './App.css';
 function App(props) {
 	const { fetchData } = props;
 	useEffect(() => {
-		// fetchData();
+		fetchData();
 	}, [fetchData]);
 	return (
 		<div className="App" test="hola">
