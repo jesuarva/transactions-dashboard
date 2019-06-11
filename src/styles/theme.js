@@ -31,7 +31,6 @@ export default createMuiTheme({
 		},
 	},
 	typography: {
-		htmlFontSize: 10,
 		useNextVariants: true,
 		fontFamily: "'Source Sans Pro', sans-serif'",
 	},

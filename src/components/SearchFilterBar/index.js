@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import { fetchData } from '../../actions';
 import styles from './styles';
 
@@ -32,13 +28,43 @@ function setInitialState() {
 
 function SearchFilterBar({ fetchData, classes }) {
 	const [state, setState] = useState(setInitialState());
-	function handleChange(field) {
-		return e => {
-			setState({
-				...state,
-				[field]: e.target.value === 'All' ? '' : e.target.value,
-			});
-		};
+	const [isExpanded, setIsExpanded] = useState(setInitialState());
+	const ref = useRef(setInitialState());
+
+	function updateState(field, value) {
+		setState({
+			...state,
+			[field]: value === 'All' ? '' : value,
+		});
+	}
+	function togglePanel(field) {
+		setIsExpanded({
+			...isExpanded,
+			[field]: !isExpanded[field],
+		});
+		controlFocus(field);
+	}
+	function controlFocus(field) {
+		if (isExpanded[field]) {
+			ref.current[field].querySelector('button').focus();
+		} else {
+			ref.current[field].querySelector('ul').focus();
+		}
+	}
+	function handleOptionSelection(e, field) {
+		const node = e.target;
+		const isSelected = node.getAttribute('aria-selected');
+		const value = node.id;
+		requestAnimationFrame(() => {
+			updateState(field, isSelected === 'true' ? 'All' : value);
+			resetAllAriaSelected(field);
+			node.setAttribute('aria-selected', isSelected === 'true' ? 'false' : 'true');
+			togglePanel(field);
+		});
+	}
+	function resetAllAriaSelected(field) {
+		const options = ref.current[field].querySelectorAll('li');
+		options.forEach(option => option.setAttribute('aria-selected', 'false'));
 	}
 	function onSubmit() {
 		const queries = [];
@@ -55,27 +81,48 @@ function SearchFilterBar({ fetchData, classes }) {
 		fetchData(queryString);
 	}
 
-	console.log(state);
 	return (
 		<div className={classes.root}>
 			{Object.entries(QUERIES_DETAILS).map(([field, details]) => (
-				<FormControl key={field} variant="outlined" className={classes.formControl}>
-					<InputLabel htmlFor={`${field}-dropDown`}>{details.label}</InputLabel>
-					<Select
-						value={state[field]}
-						onChange={handleChange(field)}
-						input={
-							<OutlinedInput /*labelWidth={labelWidth}*/ name={field} id={`${field}-dropDown`} />
-						}
-					>
-						{details.values.map(option => (
-							<MenuItem key={option} value={option}>
-								{option}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
+				<div keuy={field} className={classes.dropDownContainer}>
+					<span id="dropDown_label" className={classes.hide}>
+						{`Choose an element to filter ${details.label}:`}
+					</span>
+					<div ref={el => (ref.current[field] = el)} id="exp_wrapper">
+						<button
+							id="dropDown_button"
+							className={classes.currentSelection}
+							onClick={() => togglePanel(field)}
+							aria-haspopup="listbox"
+							aria-labelledby="dropDown_label dropDown_button"
+						>
+							{state[field] || details.label}
+						</button>
+						<ul
+							className={classNames(classes.dropDownList, isExpanded[field] || classes.collapsed)}
+							onClick={e => handleOptionSelection(e, field)}
+							onKeyPress={e => handleOptionSelection(e, field)}
+							tabIndex={isExpanded[field] ? 1 : -1}
+							role="listbox"
+							aria-labelledby="dropDown_label"
+						>
+							{details.values.map(option => (
+								<li
+									key={option}
+									id={option}
+									className={classes.dropDownItem}
+									tabIndex={isExpanded[field] ? 1 : -1}
+									role="option"
+									aria-selected="false"
+								>
+									{option}
+								</li>
+							))}
+						</ul>
+					</div>
+				</div>
 			))}
+
 			<button className={classes.submit} onClick={onSubmit}>
 				{'Search'}
 			</button>
