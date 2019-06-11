@@ -1,5 +1,3 @@
-import { hidden } from 'ansi-colors';
-
 const HIDE_STYLES = {
 	position: 'absolute',
 	top: '-500px',
@@ -12,20 +10,49 @@ const CELL_HEIGHT = {
 };
 
 export default theme => ({
+	// HELPERS
 	hide: HIDE_STYLES,
 	collapsed: {},
+
+	// COLUMN NAMES
 	name: {},
 	brand: {},
 	last4Digits: {},
 	transactionType: {},
 	amount: {},
 	currency: {},
+
+	// TABLE-CELL HELPERS
+	extraDetails: {},
 	label: {},
 	data: {},
 
+	root: {
+		padding: '50px 20px 100px',
+		background: theme.palette.paleGrey2.main,
+	},
 	table: {
+		'& [role="row"], & [role="row button"]': {
+			padding: '0 1rem',
+		},
 		'& [role="cell"], & [role="columnheader"]': {
 			height: CELL_HEIGHT.DESKTOP,
+			textAlign: 'left',
+			fontSize: '1rem',
+			[theme.breakpoints.down('xs')]: {
+				fontSize: '0.8rem',
+			},
+		},
+		'& [role="columnheader"]': {
+			color: theme.palette.cobalt.main,
+			fontWeight: 600,
+		},
+		'& [role="cell"]': {
+			color: theme.palette.greyishBrown.main,
+			fontWeight: 400,
+		},
+		'& $label': {
+			color: theme.palette.cobalt.main,
 		},
 		'& [role="cell"], & [role="columnheader"], & $label, & $data': {
 			display: 'flex',
@@ -37,6 +64,7 @@ export default theme => ({
 	// TABLE-HEADERS STYLES
 	tableHeaders: {
 		display: 'flex',
+		background: theme.palette.primary.main,
 		'& [role="columnheader"]': {
 			flex: '1 0 10%',
 		},
@@ -61,72 +89,92 @@ export default theme => ({
 	// TABLE-BODY STYLES
 	tableBody: {},
 	tableBodyRow: {},
-	topPanel: {
+	details: {
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
-		height: CELL_HEIGHT.DESKTOP,
+		height: `calc(var(--topPanel-numberOfSubRowsDesktop) * ${CELL_HEIGHT.DESKTOP})`,
 		transition: 'height 200ms linear',
+		background: theme.palette.paleGrey.main,
+		borderTop: `solid ${theme.palette.paleGrey2.main} 1px`,
 		overflow: 'hidden',
+		'&:focus': {
+			outline: `solid ${theme.palette.lightGreyBlue.main} 1.5px`,
+		},
 		'& [role="cell"]': {
 			flex: '1 0 10%',
 		},
 		'& $label': {
 			display: 'none',
 		},
+		'& $extraDetails': {
+			flex: '1 0 50%',
+			display: 'flex',
+			flexDirection: 'row',
+			justifyContent: 'flex-start',
+			overflow: 'hidden',
+			maxWidth: '45%',
+		},
+		'& $brand, $last4Digits': {
+			flex: '1 0 10%',
+		},
+		'& $extraDetails $label': {
+			flex: '1 0 20%',
+			display: 'flex',
+			textAlign: 'left',
+		},
+		'& $brand $label, $last4Digits $label': {
+			display: 'none',
+		},
+		'& $extraDetails $data': {
+			flex: '1 0 69%',
+			textAlign: 'left',
+		},
+		'&$collapsed': {
+			height: CELL_HEIGHT.DESKTOP,
+			background: theme.palette.primary.main,
+		},
 		[theme.breakpoints.down('sm')]: {
 			height: `calc(var(--topPanel-numberOfSubRowsTablet) * ${CELL_HEIGHT.DESKTOP})`,
-			'&$collapsed': {
-				height: CELL_HEIGHT.DESKTOP,
-			},
 			'& [role="cell"]': {
 				flex: '1 0 23%',
 			},
-			'& $brand, & $last4Digits': {
+			'& $extraDetails': {
 				flex: '1 0 63%',
 				order: 1,
 				display: 'flex',
 				flexDirection: 'row',
 				justifyContent: 'flex-start',
-				// height: 1,
 				overflow: 'hidden',
 				maxWidth: '80%',
 			},
-			'& $brand $label, & $last4Digits $label': {
-				flex: '1 0 30%',
+			'& $brand $label, $last4Digits $label': {
+				flex: '1 0 20%',
 				display: 'flex',
-				textAlign: 'left',
-			},
-			'& $brand $data, & $last4Digits $data': {
-				flex: '1 0 60%',
 				textAlign: 'left',
 			},
 		},
 		[theme.breakpoints.down('xs')]: {
 			height: `calc(var(--topPanel-numberOfSubRowsMobile) * ${CELL_HEIGHT.DESKTOP})`,
-			'&$collapsed': {
-				height: CELL_HEIGHT.DESKTOP,
-			},
 			'& [role="cell"]': {
 				flex: '1 0 30%',
 			},
-			'& $brand, & $last4Digits, & $transactionType': {
+			'& $transactionType, & $extraDetails': {
 				flex: '1 0 60%',
 				order: 1,
 				display: 'flex',
 				flexDirection: 'row',
 				justifyContent: 'flex-start',
-				// height: 1,
 				overflow: 'hidden',
-				maxWidth: '80%',
+				maxWidth: '85%',
 			},
-			'& $brand $label, & $last4Digits $label, & $transactionType $label': {
+			'& $extraDetails $label, & $transactionType $label': {
 				flex: '1 0 30%',
 				display: 'flex',
 				textAlign: 'left',
 			},
-			'& $brand $data, & $last4Digits $data, & $transactionType $data': {
-				flex: '1 0 60%',
+			'& $extraDetails $data, & $transactionType $data': {
+				flex: '1 0 55%',
 				textAlign: 'left',
 			},
 		},
@@ -136,38 +184,14 @@ export default theme => ({
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
-		height: `calc(var(--bottomPanel-numberOfChildrenCells) * ${CELL_HEIGHT.DESKTOP})`,
+		height: `calc(var(--bottomPanel-numberOfChildrenCellsDesktop) * ${CELL_HEIGHT.DESKTOP})`,
 		transition: 'height 200ms linear',
 		overflow: 'hidden',
+		[theme.breakpoints.down('sm')]: {
+			height: `calc(var(--bottomPanel-numberOfChildrenCellsTabletAndMobile) * ${CELL_HEIGHT.DESKTOP})`,
+		},
 		'&$collapsed': {
 			height: '1px',
-		},
-	},
-	extraDetails: {
-		flex: '1 0 40%',
-		display: 'flex',
-		justifyContent: 'flex-start',
-		overflow: 'hidden',
-		maxWidth: '45%',
-		[theme.breakpoints.down('sm')]: {
-			flex: '1 0 60%',
-			display: 'flex',
-			justifyContent: 'flex-start',
-			overflow: 'hidden',
-			maxWidth: '80%',
-		},
-		"&[role='cell']": {
-			display: 'flex',
-			flexDirection: 'row',
-			justifyContent: 'center',
-		},
-		'& $label': {
-			flex: '1 0 30%',
-			textAlign: 'left',
-		},
-		'& $data': {
-			flex: '1 0 60%',
-			textAlign: 'left',
 		},
 	},
 });
