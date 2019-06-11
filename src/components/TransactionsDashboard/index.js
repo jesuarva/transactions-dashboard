@@ -89,9 +89,9 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 								tabIndex={0}
 								className={classNames(classes.details, expandedPanels[index] || classes.collapsed)}
 								style={{
-									'--topPanel-numberOfSubRowsDesktop': 4,
-									'--topPanel-numberOfSubRowsTablet': 9,
-									'--topPanel-numberOfSubRowsMobile': 10,
+									'--topPanel-numberOfSubRowsDesktop': 5,
+									'--topPanel-numberOfSubRowsTablet': 10,
+									'--topPanel-numberOfSubRowsMobile': 11,
 								}}
 								onClick={() => handleClick(index)}
 								onKeyPress={e => handleKeyPress(e, index)}
@@ -123,6 +123,9 @@ function TransactionsDashboard({ data, cardBrand, classes }) {
 								<div role="cell" className={classes.currency}>
 									{transaction.currencyCode}
 								</div>
+
+								{expandedPanels[index] && <hr className={classes.hr}></hr>}
+
 								<div role="cell" className={classes.extraDetails}>
 									<div aria-hidden="true" className={classes.label}>
 										{'ID:'}

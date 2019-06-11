@@ -26,6 +26,10 @@ export default theme => ({
 	extraDetails: {},
 	label: {},
 	data: {},
+	hr: {
+		borderTop: `solid ${theme.palette.paleGrey2.main} 1px`,
+		flex: '1 0 100%',
+	},
 
 	root: {
 		padding: '50px 20px 100px',
@@ -99,7 +103,7 @@ export default theme => ({
 		borderTop: `solid ${theme.palette.paleGrey2.main} 1px`,
 		overflow: 'hidden',
 		'&:focus': {
-			outline: `solid ${theme.palette.lightGreyBlue.main} 1.5px`,
+			outline: `solid ${theme.palette.topaz.main} 1.5px`,
 		},
 		'& [role="cell"]': {
 			flex: '1 0 10%',
