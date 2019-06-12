@@ -121,10 +121,11 @@ export default theme => ({
 		padding: '010px',
 		color: theme.palette.primary.main,
 		fontSize: '1rem',
-		// background: theme.palette.avocado.main,
+		background: theme.palette.avocado.main,
 		borderRadius: 3,
-		'&, &:focus, &:hover': {
+		'&:focus, &:hover': {
 			background: theme.palette.avocado.main,
+			outline: `1px solid ${theme.palette.lightGreyBlue.main}`,
 		},
 		[theme.breakpoints.down('xs')]: {
 			fontSize: '0.75rem',
