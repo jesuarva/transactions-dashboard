@@ -18,12 +18,12 @@ export default theme => ({
 		},
 	},
 	currencyCode: {
-		flex: '0 0 10%',
+		flex: '0 0 13%',
 		[theme.breakpoints.down('sm')]: {
-			flex: '0 0 13%',
+			flex: '0 0 16%',
 		},
 		[theme.breakpoints.down('xs')]: {
-			flex: '0 0 17%',
+			flex: '0 0 20%',
 		},
 	},
 	root: {
