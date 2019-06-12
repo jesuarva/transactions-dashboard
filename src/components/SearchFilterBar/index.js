@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import { fetchData } from '../../actions';
 import styles from './styles';
 
 /**
- * Object defining the query endpoints.
+ * Object helper defining the query endpoints.
  */
 const QUERIES_DETAILS = {
 	action: {
@@ -79,19 +79,26 @@ function SearchFilterBar({ fetchData, classes }) {
 		}
 
 		fetchData(queryString);
+		setIsExpanded(setInitialState());
 	}
 
 	return (
 		<div className={classes.root}>
 			{Object.entries(QUERIES_DETAILS).map(([field, details]) => (
-				<div keuy={field} className={classes.dropDownContainer}>
+				<div key={field} className={classNames(classes.field, classes[field])}>
 					<span id="dropDown_label" className={classes.hide}>
 						{`Choose an element to filter ${details.label}:`}
 					</span>
-					<div ref={el => (ref.current[field] = el)} id="exp_wrapper">
+					<div
+						ref={el => (ref.current[field] = el)}
+						className={classNames(classes.dropDownWrapper, isExpanded[field] && classes.expanded)}
+					>
 						<button
 							id="dropDown_button"
-							className={classes.currentSelection}
+							className={classNames(
+								classes.buttonCurrentSelection,
+								isExpanded[field] && classes.expanded,
+							)}
 							onClick={() => togglePanel(field)}
 							aria-haspopup="listbox"
 							aria-labelledby="dropDown_label dropDown_button"
@@ -99,10 +106,13 @@ function SearchFilterBar({ fetchData, classes }) {
 							{state[field] || details.label}
 						</button>
 						<ul
-							className={classNames(classes.dropDownList, isExpanded[field] || classes.collapsed)}
+							className={classNames(
+								classes.dropDownList,
+								isExpanded[field] ? classes.expanded : classes.collapsed,
+							)}
+							style={{ '--number-of-options': details.values.length }}
 							onClick={e => handleOptionSelection(e, field)}
 							onKeyPress={e => handleOptionSelection(e, field)}
-							tabIndex={isExpanded[field] ? 1 : -1}
 							role="listbox"
 							aria-labelledby="dropDown_label"
 						>
@@ -111,7 +121,7 @@ function SearchFilterBar({ fetchData, classes }) {
 									key={option}
 									id={option}
 									className={classes.dropDownItem}
-									tabIndex={isExpanded[field] ? 1 : -1}
+									tabIndex={isExpanded[field] ? 0 : -1}
 									role="option"
 									aria-selected="false"
 								>

@@ -3,3 +3,33 @@
 * {
 	font-family: 'Source Sans Pro', sans-serif;
 }
+
+/* Reset default <button> styles */
+button {
+	display: inline-block;
+	border: none;
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	background: none;
+	color: inherit;
+	font-size: inherit;
+	cursor: pointer;
+	text-align: center;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
+button:hover,
+button:focus {
+	background: none;
+}
+
+button:focus {
+	outline: none;
+	outline-offset: -4px;
+}
+
+button:active {
+	transform: scale(0.99);
+}

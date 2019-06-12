@@ -30,6 +30,11 @@ export default createMuiTheme({
 			main: '#e8ebf3',
 		},
 	},
+	cellHeight: {
+		DESKTOP: '40px',
+		TABLET: '20px',
+		MOBILE: '20px',
+	},
 	typography: {
 		useNextVariants: true,
 		fontFamily: "'Source Sans Pro', sans-serif'",

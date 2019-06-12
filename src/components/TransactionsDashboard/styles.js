@@ -3,11 +3,6 @@ const HIDE_STYLES = {
 	top: '-500px',
 	overflow: 'hidden',
 };
-const CELL_HEIGHT = {
-	DESKTOP: '40px',
-	TABLET: '20px',
-	MOBILE: '20px',
-};
 
 export default theme => ({
 	// HELPERS
@@ -40,7 +35,7 @@ export default theme => ({
 			padding: '0 1rem',
 		},
 		'& [role="cell"], & [role="columnheader"]': {
-			height: CELL_HEIGHT.DESKTOP,
+			height: theme.cellHeight.DESKTOP,
 			textAlign: 'left',
 			fontSize: '1rem',
 			[theme.breakpoints.down('xs')]: {
@@ -97,7 +92,7 @@ export default theme => ({
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
-		height: `calc(var(--topPanel-numberOfSubRowsDesktop) * ${CELL_HEIGHT.DESKTOP})`,
+		height: `calc(var(--topPanel-numberOfSubRowsDesktop) * ${theme.cellHeight.DESKTOP})`,
 		transition: 'height 200ms linear',
 		background: theme.palette.paleGrey.main,
 		borderTop: `solid ${theme.palette.paleGrey2.main} 1px`,
@@ -135,11 +130,11 @@ export default theme => ({
 			textAlign: 'left',
 		},
 		'&$collapsed': {
-			height: CELL_HEIGHT.DESKTOP,
+			height: theme.cellHeight.DESKTOP,
 			background: theme.palette.primary.main,
 		},
 		[theme.breakpoints.down('sm')]: {
-			height: `calc(var(--topPanel-numberOfSubRowsTablet) * ${CELL_HEIGHT.DESKTOP})`,
+			height: `calc(var(--topPanel-numberOfSubRowsTablet) * ${theme.cellHeight.DESKTOP})`,
 			'& [role="cell"]': {
 				flex: '1 0 23%',
 			},
@@ -159,7 +154,7 @@ export default theme => ({
 			},
 		},
 		[theme.breakpoints.down('xs')]: {
-			height: `calc(var(--topPanel-numberOfSubRowsMobile) * ${CELL_HEIGHT.DESKTOP})`,
+			height: `calc(var(--topPanel-numberOfSubRowsMobile) * ${theme.cellHeight.DESKTOP})`,
 			'& [role="cell"]': {
 				flex: '1 0 30%',
 			},
@@ -188,11 +183,11 @@ export default theme => ({
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
-		height: `calc(var(--bottomPanel-numberOfChildrenCellsDesktop) * ${CELL_HEIGHT.DESKTOP})`,
+		height: `calc(var(--bottomPanel-numberOfChildrenCellsDesktop) * ${theme.cellHeight.DESKTOP})`,
 		transition: 'height 200ms linear',
 		overflow: 'hidden',
 		[theme.breakpoints.down('sm')]: {
-			height: `calc(var(--bottomPanel-numberOfChildrenCellsTabletAndMobile) * ${CELL_HEIGHT.DESKTOP})`,
+			height: `calc(var(--bottomPanel-numberOfChildrenCellsTabletAndMobile) * ${theme.cellHeight.DESKTOP})`,
 		},
 		'&$collapsed': {
 			height: '1px',
